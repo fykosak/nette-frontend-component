@@ -17,12 +17,8 @@ export default class Renderer {
             if (element.getAttribute('data-served')) {
                 return;
             }
-            const reactId = element.getAttribute('data-react-id');
-            const rawData = element.getAttribute('data-data');
-            const actionsData = JSON.parse(element.getAttribute('data-actions'));
-            const actions = new NetteActions(actionsData);
 
-            if (this.hashMapLoader.render(element, reactId, rawData, actions)) {
+            if (this.hashMapLoader.render(element)) {
                 element.setAttribute('data-served', '1');
                 return;
             }

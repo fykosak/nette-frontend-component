@@ -38,66 +38,71 @@ export default class HashMapLoader {
         [reactId: string]: boolean;
     } = {};
 
-    public register(reactId: string, callback: mapRegisterCallback): void {
-        this.checkConflict(reactId);
-        this.apps[reactId] = callback;
+    public register(frontendId: string, callback: mapRegisterCallback): void {
+        this.checkConflict(frontendId);
+        this.apps[frontendId] = callback;
     }
 
     public registerActionsComponent<T = any, P = Record<string, never>>(
-        reactId: string,
+        frontendId: string,
         component: React.ComponentClass<{ actions: NetteActions; data: T } & P>,
         params: P = null,
     ): void {
-        this.checkConflict(reactId);
-        this.actionsComponents[reactId] = {component, params};
+        this.checkConflict(frontendId);
+        this.actionsComponents[frontendId] = {component, params};
     }
 
     public registerDataComponent<T = any, P = Record<string, never>>(
-        reactId: string,
+        frontendId: string,
         component: React.ComponentClass<{ data: T } & P>,
         params: P = null,
     ): void {
-        this.checkConflict(reactId);
-        this.dataComponents[reactId] = {component, params};
+        this.checkConflict(frontendId);
+        this.dataComponents[frontendId] = {component, params};
     }
 
     public registerComponent<P = Record<string, never>>(
-        reactId: string,
+        frontendId: string,
         component: React.ComponentClass<P>,
         params: P = null,
     ): void {
-        this.checkConflict(reactId);
-        this.components[reactId] = {component, params};
+        this.checkConflict(frontendId);
+        this.components[frontendId] = {component, params};
     }
 
-    public render(element, reactId, rawData, actions): boolean {
+    public render(element): boolean {
+        const frontendId = element.getAttribute('data-frontend-id');
+        const rawData = element.getAttribute('data-data');
+        const actionsData = JSON.parse(element.getAttribute('data-actions'));
+        const actions = new NetteActions(actionsData);
+
         const data = JSON.parse(rawData);
-        if (this.apps.hasOwnProperty(reactId)) {
-            this.apps[reactId](element, reactId, rawData, actions);
+        if (this.apps.hasOwnProperty(frontendId)) {
+            this.apps[frontendId](element, frontendId, rawData, actions);
             return true;
         }
-        if (this.actionsComponents.hasOwnProperty(reactId)) {
-            const {component, params} = this.actionsComponents[reactId];
+        if (this.actionsComponents.hasOwnProperty(frontendId)) {
+            const {component, params} = this.actionsComponents[frontendId];
             ReactDOM.render(React.createElement(component, {actions, data, ...params}), element);
             return true;
         }
-        if (this.dataComponents.hasOwnProperty(reactId)) {
-            const {component, params} = this.dataComponents[reactId];
+        if (this.dataComponents.hasOwnProperty(frontendId)) {
+            const {component, params} = this.dataComponents[frontendId];
             ReactDOM.render(React.createElement(component, {data, ...params}), element);
             return true;
         }
-        if (this.components.hasOwnProperty(reactId)) {
-            const {component, params} = this.components[reactId];
+        if (this.components.hasOwnProperty(frontendId)) {
+            const {component, params} = this.components[frontendId];
             ReactDOM.render(React.createElement(component, params), element);
             return true;
         }
         return false;
     }
 
-    private checkConflict(reactId: string): void {
-        if (this.keys.hasOwnProperty(reactId)) {
-            throw new Error('App with "' + reactId + '" is already registred.');
+    private checkConflict(frontendId: string): void {
+        if (this.keys.hasOwnProperty(frontendId)) {
+            throw new Error('App with "' + frontendId + '" is already registred.');
         }
-        this.keys[reactId] = true;
+        this.keys[frontendId] = true;
     }
 }
