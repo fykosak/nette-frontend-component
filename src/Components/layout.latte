@@ -1,4 +1,4 @@
-{layout '../BaseComponent/@layout.latte'}
+{layout dirname((new \ReflectionClass(Fykosak\Utils\BaseComponent\BaseComponent::class))->getFileName()) . '/@layout.latte'}
 {varType \Nette\Utils\Html $html}
 {block content}
     {$html}

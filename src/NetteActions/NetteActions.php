@@ -20,9 +20,6 @@ class NetteActions
     }
 
     /**
-     * @param string $key
-     * @param string $destination
-     * @param array $params
      * @throws InvalidLinkException
      */
     public function addAction(string $key, string $destination, array $params = []): void

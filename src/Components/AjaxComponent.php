@@ -29,9 +29,6 @@ abstract class AjaxComponent extends FrontEndComponent
     }
 
     /**
-     * @param string $key
-     * @param string $destination
-     * @param array $params
      * @throws InvalidLinkException
      */
     public function addAction(string $key, string $destination, array $params = []): void
@@ -40,8 +37,6 @@ abstract class AjaxComponent extends FrontEndComponent
     }
 
     /**
-     * @param int $code
-     * @return void
      * @throws AbortException
      */
     protected function sendAjaxResponse(int $code = IResponse::S200_OK): void

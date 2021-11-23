@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { Response } from '../Responses/response';
+import {Response} from '../../Responses/response';
 
 export interface ActionFetchSuccess<D> extends Action<string> {
     data: D;

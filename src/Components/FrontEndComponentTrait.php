@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Fykosak\NetteFrontendComponent\Components;
 
-use Fykosak\Utils\Loaders\JavaScriptCollector;
 use Fykosak\Utils\Logging\{MemoryLogger, Message};
 use Nette\Application\BadRequestException;
 use Nette\Forms\Controls\BaseControl;
@@ -13,15 +12,12 @@ use Nette\Utils\Html;
 trait FrontEndComponentTrait
 {
 
-    private MemoryLogger $logger;
     private static bool $attachedJS = false;
-    protected string $reactId;
+    private string $reactId;
 
     protected function registerReact(string $reactId): void
     {
         $this->reactId = $reactId;
-        $this->logger = new MemoryLogger();
-        $this->registerMonitor();
     }
 
     /**
@@ -38,28 +34,19 @@ trait FrontEndComponentTrait
     protected function appendPropertyTo(Html $html): void
     {
         $html->setAttribute('data-react-root', true);
-        $html->setAttribute('data-react-id', $this->reactId);
+        $html->setAttribute('data-frontend-id', $this->reactId);
         foreach ($this->getResponseData() as $key => $value) {
             $html->setAttribute('data-' . $key, $value);
         }
     }
 
-    private function registerMonitor(): void
-    {
-        $this->monitor(
-            JavaScriptCollector::class,
-            function (JavaScriptCollector $collector) {
-                if (!self::$attachedJS) {
-                    self::$attachedJS = true;
-                    $collector->registerJSFile('js/bundle.min.js');
-                }
-            }
-        );
-    }
-
     protected function getLogger(): MemoryLogger
     {
-        return $this->logger;
+        static $logger;
+        if (!isset($logger)) {
+            $logger = new MemoryLogger();
+        }
+        return $logger;
     }
 
     /**
@@ -82,10 +69,10 @@ trait FrontEndComponentTrait
         $this->configure();
         $data['messages'] = array_map(
             fn(Message $value): array => $value->__toArray(),
-            $this->logger->getMessages()
+            $this->getLogger()->getMessages()
         );
         $data['data'] = json_encode($this->getData());
-        $this->logger->clear();
+        $this->getLogger()->clear();
         return $data;
     }
 }
