@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {NetteActions} from '../NetteActions/netteActions';
 
-export type mapRegisterCallback = (element: Element, reactId: string, data: string, actions: NetteActions) => void;
+export type mapRegisterCallback = (element: Element, frontendId: string, data: string, actions: NetteActions) => void;
 
 interface RegisteredComponent<O = any> {
     component: React.ComponentClass<O>;
@@ -21,21 +21,20 @@ interface RegisteredActionComponent<O = any, D = any> {
 
 export default class HashMapLoader {
     private components: {
-        [reactId: string]: RegisteredComponent;
+        [frontendId: string]: RegisteredComponent;
     } = {};
     private actionsComponents: {
-        [reactId: string]: RegisteredActionComponent;
+        [frontendId: string]: RegisteredActionComponent;
     } = {};
 
     private dataComponents: {
-        [reactId: string]: RegisteredDataComponent;
+        [frontendId: string]: RegisteredDataComponent;
     } = {};
     private apps: {
-        [reactId: string]: mapRegisterCallback;
+        [frontendId: string]: mapRegisterCallback;
     } = {};
-
     private keys: {
-        [reactId: string]: boolean;
+        [frontendId: string]: boolean;
     } = {};
 
     public register(frontendId: string, callback: mapRegisterCallback): void {

@@ -12,10 +12,10 @@ abstract class FrontEndComponent extends BaseComponent
 {
     use FrontEndComponentTrait;
 
-    public function __construct(Container $container, string $reactId)
+    public function __construct(Container $container, string $frontendId)
     {
         parent::__construct($container);
-        $this->registerReact($reactId);
+        $this->registerFrontend($frontendId);
     }
 
     final public function render(): void

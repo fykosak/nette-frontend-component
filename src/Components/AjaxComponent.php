@@ -17,9 +17,9 @@ abstract class AjaxComponent extends FrontEndComponent
     private IRequest $request;
     protected NetteActions $actions;
 
-    public function __construct(Container $container, string $reactId)
+    public function __construct(Container $container, string $frontendId)
     {
-        parent::__construct($container, $reactId);
+        parent::__construct($container, $frontendId);
         $this->actions = new NetteActions($this);
     }
 

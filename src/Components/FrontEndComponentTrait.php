@@ -13,11 +13,11 @@ trait FrontEndComponentTrait
 {
 
     private static bool $attachedJS = false;
-    private string $reactId;
+    private string $frontendId;
 
-    protected function registerReact(string $reactId): void
+    protected function registerFrontend(string $frontendId): void
     {
-        $this->reactId = $reactId;
+        $this->frontendId = $frontendId;
     }
 
     /**
@@ -33,8 +33,8 @@ trait FrontEndComponentTrait
 
     protected function appendPropertyTo(Html $html): void
     {
-        $html->setAttribute('data-react-root', true);
-        $html->setAttribute('data-frontend-id', $this->reactId);
+        $html->setAttribute('data-frontend-root', true);
+        $html->setAttribute('data-frontend-id', $this->frontendId);
         foreach ($this->getResponseData() as $key => $value) {
             $html->setAttribute('data-' . $key, $value);
         }
