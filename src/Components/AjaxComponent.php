@@ -31,15 +31,19 @@ abstract class AjaxComponent extends FrontEndComponent
     /**
      * @throws InvalidLinkException
      */
-    public function addAction(string $key, string $destination, array $params = []): void
+    final public function addAction(string $key, string $destination, array $params = []): void
     {
         $this->actions->addAction($key, $destination, $params);
+    }
+
+    protected function createActions(): void
+    {
     }
 
     /**
      * @throws AbortException
      */
-    protected function sendAjaxResponse(int $code = IResponse::S200_OK): void
+    final protected function sendAjaxResponse(int $code = IResponse::S200_OK): void
     {
         $response = new AjaxResponse();
         $response->setCode($code);
@@ -47,7 +51,7 @@ abstract class AjaxComponent extends FrontEndComponent
         $this->getPresenter()->sendResponse($response);
     }
 
-    protected function getHttpRequest(): IRequest
+    final protected function getHttpRequest(): IRequest
     {
         return $this->request;
     }
@@ -55,6 +59,7 @@ abstract class AjaxComponent extends FrontEndComponent
     protected function getResponseData(): array
     {
         $data = parent::getResponseData();
+        $this->createActions();
         $data['actions'] = $this->actions->serialize();
         return $data;
     }
