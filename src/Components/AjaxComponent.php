@@ -55,8 +55,7 @@ abstract class AjaxComponent extends FrontEndComponent
     protected function getResponseData(): array
     {
         $data = parent::getResponseData();
-        $this->createActions();
-        $data['actions'] = $this->actions->serialize();
+        $data['actions'] = $this->actions->getActions();
         return $data;
     }
 }

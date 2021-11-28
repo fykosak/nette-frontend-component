@@ -7,6 +7,7 @@ import {
 } from './actions';
 import {NetteActions} from '../../NetteActions/netteActions';
 import {Message, Response} from '../../Responses/response';
+import {Action} from 'redux';
 
 export interface FetchApiState<> {
     submitting?: boolean;
@@ -51,14 +52,14 @@ const initState: FetchApiState = {
     messages: [],
 };
 
-export function fetchApi<D = any>(state: FetchApiState = initState, action: any): FetchApiState {
+export function fetchApi<Data = Record<string, never>>(state: FetchApiState = initState, action: Action<string>): FetchApiState {
     switch (action.type) {
         case ACTION_FETCH_START:
             return fetchStart(state);
         case ACTION_FETCH_FAIL:
             return fetchFail(state, action);
         case ACTION_FETCH_SUCCESS:
-            return fetchSuccess<D>(state, action);
+            return fetchSuccess<Data>(state, action);
         default:
             return state;
     }

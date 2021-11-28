@@ -4,12 +4,12 @@ import {Response} from '../Responses/response';
 import StoreCreator from './StoreCreator';
 import StoreLoader from './StoreLoader';
 
-interface OwnProps<S, D> {
-    storeMap: Response<D>;
-    app: Reducer<S, Action<string>>;
+interface OwnProps<Store, Data> {
+    storeMap: Response<Data>;
+    app: Reducer<Store, Action<string>>;
 }
 
-export default class ActionsStoreCreator<S, D> extends React.Component<OwnProps<S, D>, Record<string, never>> {
+export default class ActionsStoreCreator<Store, Data> extends React.Component<OwnProps<Store, Data>, Record<string, never>> {
 
     public render() {
         const {storeMap, app} = this.props;

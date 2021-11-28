@@ -4,27 +4,27 @@ import {NetteActions} from '../NetteActions/netteActions';
 
 export type mapRegisterCallback = (element: Element, frontendId: string, data: string, actions: NetteActions) => void;
 
-type Component<Props = any> = React.ComponentClass<Props> | React.FunctionComponent<Props>;
+type Component<Props = Record<string, never>> = React.ComponentClass<Props> | React.FunctionComponent<Props>;
 
-type DataComponent<OwnProps = any, Data = any> = Component<OwnProps & { data: Data }>
+type DataComponent<OwnProps = Record<string, never>, Data = unknown> = Component<OwnProps & { data: Data }>
 
-type ActionComponent<OwnProps = any, Data = any> = DataComponent<OwnProps & { actions: NetteActions }, Data>;
+type ActionComponent<OwnProps = Record<string, never>, Data = unknown> = DataComponent<OwnProps & { actions: NetteActions }, Data>;
 
-interface ComponentDatum<ComponentType extends Component<OwnProps>, OwnProps = any> {
+interface ComponentDatum<ComponentType extends Component<OwnProps>, OwnProps = Record<string, never>> {
     component: ComponentType;
     params: OwnProps;
 }
 
 export default class HashMapLoader {
     private components: {
-        [frontendId: string]: ComponentDatum<Component>;
+        [frontendId: string]: ComponentDatum<Component<any>, any>;
     } = {};
     private actionsComponents: {
-        [frontendId: string]: ComponentDatum<ActionComponent>;
+        [frontendId: string]: ComponentDatum<ActionComponent<any>, any>;
     } = {};
 
     private dataComponents: {
-        [frontendId: string]: ComponentDatum<DataComponent>;
+        [frontendId: string]: ComponentDatum<DataComponent<any>, any>;
     } = {};
     private apps: {
         [frontendId: string]: mapRegisterCallback;
@@ -38,7 +38,7 @@ export default class HashMapLoader {
         this.apps[frontendId] = callback;
     }
 
-    public registerActionsComponent<Data = any, OwnProps = {}>(
+    public registerActionsComponent<Data = unknown, OwnProps = Record<string, never>>(
         frontendId: string,
         component: ActionComponent<OwnProps, Data>,
         params: OwnProps = null,
@@ -47,7 +47,7 @@ export default class HashMapLoader {
         this.actionsComponents[frontendId] = {component, params};
     }
 
-    public registerDataComponent<Data = any, OwnProps = {}>(
+    public registerDataComponent<Data = unknown, OwnProps = Record<string, never>>(
         frontendId: string,
         component: DataComponent<OwnProps, Data>,
         params: OwnProps = null,
@@ -56,7 +56,7 @@ export default class HashMapLoader {
         this.dataComponents[frontendId] = {component, params};
     }
 
-    public registerComponent<OwnProps = {}>(
+    public registerComponent<OwnProps = Record<string, never>>(
         frontendId: string,
         component: Component<OwnProps>,
         params: OwnProps = null,
@@ -65,7 +65,7 @@ export default class HashMapLoader {
         this.components[frontendId] = {component, params};
     }
 
-    public render(element): boolean {
+    public render(element: Element): boolean {
         const frontendId = element.getAttribute('data-frontend-id');
 
         if (this.components.hasOwnProperty(frontendId)) {

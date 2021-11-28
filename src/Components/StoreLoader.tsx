@@ -4,16 +4,16 @@ import {Action, Dispatch} from 'redux';
 import {Response} from '../Responses/response';
 import {fetchSuccess} from '../fetch/redux/actions';
 
-interface OwnProps<D> {
-    storeMap: Response<D>;
+interface OwnProps<Data> {
+    storeMap: Response<Data>;
     children: React.ReactNode;
 }
 
-interface DispatchProps<D> {
-    onInit(data: Response<D>): void;
+interface DispatchProps<Data> {
+    onInit(data: Response<Data>): void;
 }
 
-class StoreLoader<D> extends React.Component<OwnProps<D> & DispatchProps<D>, Record<string, never>> {
+class StoreLoader<Data> extends React.Component<OwnProps<Data> & DispatchProps<Data>, Record<string, never>> {
     public componentDidMount() {
         const {storeMap, onInit} = this.props;
         onInit(storeMap);
@@ -26,7 +26,7 @@ class StoreLoader<D> extends React.Component<OwnProps<D> & DispatchProps<D>, Rec
     }
 }
 
-function mapDispatchToProps<D>(dispatch: Dispatch<Action<string>>): DispatchProps<D> {
+function mapDispatchToProps<Data>(dispatch: Dispatch<Action<string>>): DispatchProps<Data> {
     return {
         onInit: (data) => dispatch(fetchSuccess(data)),
     };

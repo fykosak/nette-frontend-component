@@ -36,7 +36,7 @@ trait FrontEndComponentTrait
         $html->setAttribute('data-frontend-root', true);
         $html->setAttribute('data-frontend-id', $this->frontendId);
         foreach ($this->getResponseData() as $key => $value) {
-            $html->setAttribute('data-' . $key, $value);
+            $html->setAttribute('data-' . $key, json_encode($value));
         }
     }
 
@@ -71,7 +71,7 @@ trait FrontEndComponentTrait
             fn(Message $value): array => $value->__toArray(),
             $this->getLogger()->getMessages()
         );
-        $data['data'] = json_encode($this->getData());
+        $data['data'] = $this->getData();
         $this->getLogger()->clear();
         return $data;
     }

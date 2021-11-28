@@ -37,8 +37,8 @@ class NetteActions
         return isset($this->actions[$key]);
     }
 
-    public function serialize(): string
+    public function getActions(): array
     {
-        return json_encode($this->actions);
+        return $this->actions;
     }
 }

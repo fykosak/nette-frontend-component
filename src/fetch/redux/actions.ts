@@ -1,8 +1,8 @@
 import { Action } from 'redux';
 import {Response} from '../../Responses/response';
 
-export interface ActionFetchSuccess<D> extends Action<string> {
-    data: D;
+export interface ActionFetchSuccess<Data> extends Action<string> {
+    data: Data;
 }
 
 export const ACTION_FETCH_SUCCESS = '@@fetch-api/ACTION_FETCH_SUCCESS';

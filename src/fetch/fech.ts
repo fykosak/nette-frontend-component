@@ -1,5 +1,5 @@
 import {parseResponse} from './redux/netteFetch';
-import {RawResponse, Response} from "../Responses/response";
+import {RawResponse, Response} from '../Responses/response';
 
 export async function netteFetch<ResponseData>(
     url: string,
@@ -18,7 +18,7 @@ export async function netteFetch<ResponseData>(
             }
             return response.json();
         })
-        .then((d: RawResponse) => {
+        .then((d: RawResponse<ResponseData>) => {
             const parsedResponse = parseResponse<ResponseData>(d);
             success(parsedResponse);
             return parsedResponse;
