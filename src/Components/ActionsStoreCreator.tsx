@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {Action, Reducer} from 'redux';
-import {Response} from '../Responses/response';
+import {DataResponse} from '../Responses/response';
 import StoreCreator from './StoreCreator';
 import StoreLoader from './StoreLoader';
 
 interface OwnProps<Store, Data> {
-    storeMap: Response<Data>;
+    storeMap: DataResponse<Data>;
     app: Reducer<Store, Action<string>>;
 }
 

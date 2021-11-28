@@ -6,12 +6,12 @@ import {
     ActionFetchSuccess,
 } from './actions';
 import {NetteActions} from '../../NetteActions/netteActions';
-import {Message, Response} from '../../Responses/response';
+import {Message, DataResponse} from '../../Responses/response';
 import {Action} from 'redux';
 
 export interface FetchApiState<> {
     submitting?: boolean;
-    error?: Error | any;
+    error?: Response;
     messages: Message[];
     actions?: NetteActions;
     initialLoaded: boolean;
@@ -37,7 +37,7 @@ const fetchFail = (state: FetchApiState, action: ActionFetchFail): FetchApiState
     };
 };
 
-function fetchSuccess<Data = any>(state: FetchApiState, action: ActionFetchSuccess<Response<Data>>): FetchApiState {
+function fetchSuccess<Data = undefined>(state: FetchApiState, action: ActionFetchSuccess<DataResponse<Data>>): FetchApiState {
     return {
         ...state,
         actions: action.data.actions,

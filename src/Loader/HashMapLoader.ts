@@ -1,23 +1,22 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {NetteActions} from '../NetteActions/netteActions';
+import {ComponentType} from 'react';
 
 export type mapRegisterCallback = (element: Element, frontendId: string, data: string, actions: NetteActions) => void;
 
-type Component<Props = Record<string, never>> = React.ComponentClass<Props> | React.FunctionComponent<Props>;
+type DataComponent<OwnProps, Data = unknown> = ComponentType<OwnProps & { data: Data }>
 
-type DataComponent<OwnProps = Record<string, never>, Data = unknown> = Component<OwnProps & { data: Data }>
+type ActionComponent<OwnProps = Record<string, never>, Data = unknown> = ComponentType<OwnProps & { data: Data, actions: NetteActions }>;
 
-type ActionComponent<OwnProps = Record<string, never>, Data = unknown> = DataComponent<OwnProps & { actions: NetteActions }, Data>;
-
-interface ComponentDatum<ComponentType extends Component<OwnProps>, OwnProps = Record<string, never>> {
-    component: ComponentType;
+interface ComponentDatum<Component extends ComponentType<OwnProps>, OwnProps = Record<string, never>> {
+    component: Component;
     params: OwnProps;
 }
 
 export default class HashMapLoader {
     private components: {
-        [frontendId: string]: ComponentDatum<Component<any>, any>;
+        [frontendId: string]: ComponentDatum<ComponentType<any>, any>;
     } = {};
     private actionsComponents: {
         [frontendId: string]: ComponentDatum<ActionComponent<any>, any>;
@@ -58,7 +57,7 @@ export default class HashMapLoader {
 
     public registerComponent<OwnProps = Record<string, never>>(
         frontendId: string,
-        component: Component<OwnProps>,
+        component: ComponentType<OwnProps>,
         params: OwnProps = null,
     ): void {
         this.checkConflict(frontendId);

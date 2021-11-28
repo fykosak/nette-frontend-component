@@ -5,13 +5,13 @@ export interface Message {
     text: string;
 }
 
-export interface RawResponse<Data> {
+export interface RawDataResponse<Data> {
     actions: NetteActionsData;
     data: Data;
     messages: Message[];
 }
 
-export interface Response<Data> {
+export interface DataResponse<Data> {
     actions: NetteActions;
     data: Data;
     messages: Message[];

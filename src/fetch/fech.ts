@@ -1,12 +1,12 @@
 import {parseResponse} from './redux/netteFetch';
-import {RawResponse, Response} from '../Responses/response';
+import {RawDataResponse, DataResponse} from '../Responses/response';
 
 export async function netteFetch<ResponseData>(
     url: string,
     data: BodyInit | null,
-    success: (data: Response<ResponseData>) => void = () => null,
-    error: (e: Error | any) => void = () => null,
-): Promise<Response<ResponseData> | void> {
+    success: (data: DataResponse<ResponseData>) => void = () => null,
+    error: (error: Response) => void = () => null,
+): Promise<DataResponse<ResponseData> | void> {
     return fetch(url, {
         body: data,
         method: 'POST',
@@ -18,11 +18,11 @@ export async function netteFetch<ResponseData>(
             }
             return response.json();
         })
-        .then((d: RawResponse<ResponseData>) => {
+        .then((d: RawDataResponse<ResponseData>) => {
             const parsedResponse = parseResponse<ResponseData>(d);
             success(parsedResponse);
             return parsedResponse;
-        }).catch((e: Error | any) => {
-            error(e);
+        }).catch((response: Response) => {
+            error(response);
         });
 }

@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import {Response} from '../../Responses/response';
+import {DataResponse} from '../../Responses/response';
 
 export interface ActionFetchSuccess<Data> extends Action<string> {
     data: Data;
@@ -7,7 +7,7 @@ export interface ActionFetchSuccess<Data> extends Action<string> {
 
 export const ACTION_FETCH_SUCCESS = '@@fetch-api/ACTION_FETCH_SUCCESS';
 
-export function fetchSuccess<Data>(data: Response<Data>): ActionFetchSuccess<Response<Data>> {
+export function fetchSuccess<Data>(data: DataResponse<Data>): ActionFetchSuccess<DataResponse<Data>> {
     return {
         data,
         type: ACTION_FETCH_SUCCESS,
@@ -15,12 +15,12 @@ export function fetchSuccess<Data>(data: Response<Data>): ActionFetchSuccess<Res
 }
 
 export interface ActionFetchFail extends Action<string> {
-    error: Error | any;
+    error: Response;
 }
 
 export const ACTION_FETCH_FAIL = '@@fetch-api/ACTION_FETCH_FAIL';
 
-export const fetchFail = (error: Error | any): ActionFetchFail => {
+export const fetchFail = (error: Response): ActionFetchFail => {
     return {
         error,
         type: ACTION_FETCH_FAIL,

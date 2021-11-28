@@ -1,16 +1,16 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {Action, Dispatch} from 'redux';
-import {Response} from '../Responses/response';
+import {DataResponse} from '../Responses/response';
 import {fetchSuccess} from '../fetch/redux/actions';
 
 interface OwnProps<Data> {
-    storeMap: Response<Data>;
+    storeMap: DataResponse<Data>;
     children: React.ReactNode;
 }
 
 interface DispatchProps<Data> {
-    onInit(data: Response<Data>): void;
+    onInit(data: DataResponse<Data>): void;
 }
 
 class StoreLoader<Data> extends React.Component<OwnProps<Data> & DispatchProps<Data>, Record<string, never>> {
