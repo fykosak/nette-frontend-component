@@ -36,10 +36,6 @@ abstract class AjaxComponent extends FrontEndComponent
         $this->actions->addAction($key, $destination, $params);
     }
 
-    protected function createActions(): void
-    {
-    }
-
     /**
      * @throws AbortException
      */

@@ -4,31 +4,27 @@ import {NetteActions} from '../NetteActions/netteActions';
 
 export type mapRegisterCallback = (element: Element, frontendId: string, data: string, actions: NetteActions) => void;
 
-interface RegisteredComponent<O = any> {
-    component: React.ComponentClass<O>;
-    params: O;
-}
+type Component<Props = any> = React.ComponentClass<Props> | React.FunctionComponent<Props>;
 
-interface RegisteredDataComponent<O = any, D = any> {
-    component: React.ComponentClass<O & { data: D }>;
-    params: O;
-}
+type DataComponent<OwnProps = any, Data = any> = Component<OwnProps & { data: Data }>
 
-interface RegisteredActionComponent<O = any, D = any> {
-    component: React.ComponentClass<O & { data: D; actions: NetteActions }>;
-    params: O;
+type ActionComponent<OwnProps = any, Data = any> = DataComponent<OwnProps & { actions: NetteActions }, Data>;
+
+interface ComponentDatum<ComponentType extends Component<OwnProps>, OwnProps = any> {
+    component: ComponentType;
+    params: OwnProps;
 }
 
 export default class HashMapLoader {
     private components: {
-        [frontendId: string]: RegisteredComponent;
+        [frontendId: string]: ComponentDatum<Component>;
     } = {};
     private actionsComponents: {
-        [frontendId: string]: RegisteredActionComponent;
+        [frontendId: string]: ComponentDatum<ActionComponent>;
     } = {};
 
     private dataComponents: {
-        [frontendId: string]: RegisteredDataComponent;
+        [frontendId: string]: ComponentDatum<DataComponent>;
     } = {};
     private apps: {
         [frontendId: string]: mapRegisterCallback;
@@ -42,28 +38,28 @@ export default class HashMapLoader {
         this.apps[frontendId] = callback;
     }
 
-    public registerActionsComponent<T = any, P = Record<string, never>>(
+    public registerActionsComponent<Data = any, OwnProps = {}>(
         frontendId: string,
-        component: React.ComponentClass<{ actions: NetteActions; data: T } & P>,
-        params: P = null,
+        component: ActionComponent<OwnProps, Data>,
+        params: OwnProps = null,
     ): void {
         this.checkConflict(frontendId);
         this.actionsComponents[frontendId] = {component, params};
     }
 
-    public registerDataComponent<T = any, P = Record<string, never>>(
+    public registerDataComponent<Data = any, OwnProps = {}>(
         frontendId: string,
-        component: React.ComponentClass<{ data: T } & P>,
-        params: P = null,
+        component: DataComponent<OwnProps, Data>,
+        params: OwnProps = null,
     ): void {
         this.checkConflict(frontendId);
         this.dataComponents[frontendId] = {component, params};
     }
 
-    public registerComponent<P = Record<string, never>>(
+    public registerComponent<OwnProps = {}>(
         frontendId: string,
-        component: React.ComponentClass<P>,
-        params: P = null,
+        component: Component<OwnProps>,
+        params: OwnProps = null,
     ): void {
         this.checkConflict(frontendId);
         this.components[frontendId] = {component, params};
@@ -71,28 +67,31 @@ export default class HashMapLoader {
 
     public render(element): boolean {
         const frontendId = element.getAttribute('data-frontend-id');
-        const rawData = element.getAttribute('data-data');
-        const actionsData = JSON.parse(element.getAttribute('data-actions'));
-        const actions = new NetteActions(actionsData);
 
+        if (this.components.hasOwnProperty(frontendId)) {
+            const {component, params} = this.components[frontendId];
+            ReactDOM.render(React.createElement(component, params), element);
+            return true;
+        }
+
+        const rawData = element.getAttribute('data-data');
         const data = JSON.parse(rawData);
-        if (this.apps.hasOwnProperty(frontendId)) {
-            this.apps[frontendId](element, frontendId, rawData, actions);
-            return true;
-        }
-        if (this.actionsComponents.hasOwnProperty(frontendId)) {
-            const {component, params} = this.actionsComponents[frontendId];
-            ReactDOM.render(React.createElement(component, {actions, data, ...params}), element);
-            return true;
-        }
         if (this.dataComponents.hasOwnProperty(frontendId)) {
             const {component, params} = this.dataComponents[frontendId];
             ReactDOM.render(React.createElement(component, {data, ...params}), element);
             return true;
         }
-        if (this.components.hasOwnProperty(frontendId)) {
-            const {component, params} = this.components[frontendId];
-            ReactDOM.render(React.createElement(component, params), element);
+
+        const actionsData = JSON.parse(element.getAttribute('data-actions'));
+        const actions = new NetteActions(actionsData);
+        if (this.actionsComponents.hasOwnProperty(frontendId)) {
+            const {component, params} = this.actionsComponents[frontendId];
+            ReactDOM.render(React.createElement(component, {actions, data, ...params}), element);
+            return true;
+        }
+
+        if (this.apps.hasOwnProperty(frontendId)) {
+            this.apps[frontendId](element, frontendId, rawData, actions);
             return true;
         }
         return false;
