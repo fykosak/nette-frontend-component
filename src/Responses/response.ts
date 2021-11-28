@@ -1,4 +1,4 @@
-import {NetteActions} from '../NetteActions/netteActions';
+import {NetteActions, NetteActionsData} from '../NetteActions/netteActions';
 
 export interface Message {
     level: string;
@@ -6,7 +6,7 @@ export interface Message {
 }
 
 export interface RawResponse<Data> {
-    actions: Message[];
+    actions: NetteActionsData;
     data: Data;
     messages: Message[];
 }

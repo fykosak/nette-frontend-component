@@ -4,11 +4,11 @@ import {RawResponse, Response} from '../../Responses/response';
 import {NetteActions} from '../../NetteActions/netteActions';
 import {netteFetch} from '../fech';
 
-export function parseResponse<Data>(rawResponse: RawResponse): Response<Data> {
+export function parseResponse<Data>(rawResponse: RawResponse<Data>): Response<Data> {
     return {
         ...rawResponse,
-        actions: new NetteActions(JSON.parse(rawResponse.actions)),
-        data: JSON.parse(rawResponse.data),
+        actions: new NetteActions(rawResponse.actions),
+        data: rawResponse.data,
     };
 }
 

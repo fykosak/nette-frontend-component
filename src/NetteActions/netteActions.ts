@@ -1,4 +1,4 @@
-interface NetteActionsData {
+export interface NetteActionsData {
     [name: string]: string;
 }
 

@@ -37,7 +37,7 @@ const fetchFail = (state: FetchApiState, action: ActionFetchFail): FetchApiState
     };
 };
 
-function fetchSuccess<D = any>(state: FetchApiState, action: ActionFetchSuccess<Response<D>>): FetchApiState {
+function fetchSuccess<Data = any>(state: FetchApiState, action: ActionFetchSuccess<Response<Data>>): FetchApiState {
     return {
         ...state,
         actions: action.data.actions,
@@ -57,8 +57,10 @@ export function fetchApi<Data = Record<string, never>>(state: FetchApiState = in
         case ACTION_FETCH_START:
             return fetchStart(state);
         case ACTION_FETCH_FAIL:
+            // @ts-ignore
             return fetchFail(state, action);
         case ACTION_FETCH_SUCCESS:
+            // @ts-ignore
             return fetchSuccess<Data>(state, action);
         default:
             return state;
