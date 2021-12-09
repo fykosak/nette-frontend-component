@@ -4,17 +4,32 @@ import {
     ActionChangeData,
     ActionSetInitialData,
 } from './actions';
+import {Reducer} from 'redux';
 
-export interface InputConnectorReducer {
+export interface InputConnectorStateMap {
     data: Record<string, number>;
     initialData: Record<string, number>;
 }
 
-export interface Store {
-    inputConnector: InputConnectorReducer;
-}
+export type AllowedActions = ActionChangeData | ActionSetInitialData;
 
-const setData = (state: InputConnectorReducer, action: ActionChangeData): InputConnectorReducer => {
+export const inputConnectorReducer: Reducer<InputConnectorStateMap, AllowedActions> = (state = {
+    data: {},
+    initialData: {},
+}, action): InputConnectorStateMap => {
+    switch (action.type) {
+        case ACTION_CHANGE_DATA:
+            // @ts-ignore
+            return setData(state, action);
+        case ACTION_SET_INITIAL_DATA:
+            // @ts-ignore
+            return setInitialData(state, action);
+        default:
+            return state;
+    }
+};
+
+const setData = (state: InputConnectorStateMap, action: ActionChangeData): InputConnectorStateMap => {
     return {
         ...state,
         data: {
@@ -24,7 +39,7 @@ const setData = (state: InputConnectorReducer, action: ActionChangeData): InputC
     };
 };
 
-const setInitialData = (state: InputConnectorReducer, action: ActionSetInitialData): InputConnectorReducer => {
+const setInitialData = (state: InputConnectorStateMap, action: ActionSetInitialData): InputConnectorStateMap => {
     if (action.data) {
         return {
             ...state,
@@ -35,16 +50,4 @@ const setInitialData = (state: InputConnectorReducer, action: ActionSetInitialDa
     return state;
 };
 
-export const inputConnectorReducer = (state: InputConnectorReducer = {
-    data: {},
-    initialData: {},
-}, action): InputConnectorReducer => {
-    switch (action.type) {
-        case ACTION_CHANGE_DATA:
-            return setData(state, action);
-        case ACTION_SET_INITIAL_DATA:
-            return setInitialData(state, action);
-        default:
-            return state;
-    }
-};
+

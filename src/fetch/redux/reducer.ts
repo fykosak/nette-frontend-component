@@ -7,9 +7,9 @@ import {
 } from './actions';
 import {NetteActions} from '../../NetteActions/netteActions';
 import {Message, DataResponse} from '../../Responses/response';
-import {Action} from 'redux';
+import {Action, Reducer} from 'redux';
 
-export interface FetchReducer {
+export interface FetchStateMap {
     submitting?: boolean;
     error?: Response | string | number | Error;
     messages: Message[];
@@ -17,7 +17,27 @@ export interface FetchReducer {
     initialLoaded: boolean;
 }
 
-const fetchStart = (state: FetchReducer): FetchReducer => {
+export type AllowedActions = ActionFetchSuccess<DataResponse<unknown>> | ActionFetchFail | Action<string>;
+
+export const fetchReducer: Reducer<FetchStateMap, AllowedActions> = (state = {
+    initialLoaded: false,
+    messages: [],
+}, action) => {
+    switch (action.type) {
+        case ACTION_FETCH_START:
+            return fetchStart(state);
+        case ACTION_FETCH_FAIL:
+            // @ts-ignore
+            return fetchFail(state, action);
+        case ACTION_FETCH_SUCCESS:
+            // @ts-ignore
+            return fetchSuccess(state, action);
+        default:
+            return state;
+    }
+};
+
+const fetchStart = (state: FetchStateMap): FetchStateMap => {
     return {
         ...state,
         error: null,
@@ -25,7 +45,7 @@ const fetchStart = (state: FetchReducer): FetchReducer => {
         submitting: true,
     };
 };
-const fetchFail = (state: FetchReducer, action: ActionFetchFail): FetchReducer => {
+const fetchFail = (state: FetchStateMap, action: ActionFetchFail): FetchStateMap => {
     return {
         ...state,
         error: action.error,
@@ -37,7 +57,7 @@ const fetchFail = (state: FetchReducer, action: ActionFetchFail): FetchReducer =
     };
 };
 
-function fetchSuccess<Data>(state: FetchReducer, action: ActionFetchSuccess<DataResponse<Data>>): FetchReducer {
+const fetchSuccess = (state: FetchStateMap, action: ActionFetchSuccess<DataResponse<unknown>>): FetchStateMap => {
     return {
         ...state,
         actions: action.data.actions,
@@ -45,24 +65,5 @@ function fetchSuccess<Data>(state: FetchReducer, action: ActionFetchSuccess<Data
         messages: action.data.messages,
         submitting: false,
     };
-}
-
-const initState: FetchReducer = {
-    initialLoaded: false,
-    messages: [],
 };
 
-export function fetchReducer<Data>(state: FetchReducer = initState, action: Action<string>): FetchReducer {
-    switch (action.type) {
-        case ACTION_FETCH_START:
-            return fetchStart(state);
-        case ACTION_FETCH_FAIL:
-            // @ts-ignore
-            return fetchFail(state, action);
-        case ACTION_FETCH_SUCCESS:
-            // @ts-ignore
-            return fetchSuccess<Data>(state, action);
-        default:
-            return state;
-    }
-}

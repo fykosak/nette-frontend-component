@@ -5,7 +5,7 @@ import {
     Action,
     Dispatch,
 } from 'redux';
-import {Store} from './reducer';
+import {InputConnectorStateMap, InputConnectorStore} from './reducer';
 
 export interface OwnProps {
     input: HTMLInputElement;
@@ -53,7 +53,7 @@ const mapDispatchToProps = (dispatch: Dispatch<Action<string>>): DispatchProps =
     };
 };
 
-const mapStateToProps = (state: Store): StateProps => {
+const mapStateToProps = (state: { inputConnector: InputConnectorStateMap }): StateProps => {
     return {
         data: state.inputConnector.data,
     };
