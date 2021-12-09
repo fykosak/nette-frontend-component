@@ -5,7 +5,7 @@ import {
     Action,
     Dispatch,
 } from 'redux';
-import {InputConnectorStateMap, InputConnectorStore} from './reducer';
+import {InputConnectorStateMap} from './reducer';
 
 export interface OwnProps {
     input: HTMLInputElement;
