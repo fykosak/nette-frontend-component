@@ -9,28 +9,17 @@ type DataComponent<OwnProps, Data = unknown> = ComponentType<OwnProps & { data: 
 
 type ActionComponent<OwnProps = Record<string, never>, Data = unknown> = ComponentType<OwnProps & { data: Data, actions: NetteActions }>;
 
-interface ComponentDatum<Component extends ComponentType<OwnProps>, OwnProps = Record<string, never>> {
+interface ComponentDatum<OwnProps, Component extends ComponentType<OwnProps> = ComponentType<OwnProps>> {
     component: Component;
     params: OwnProps;
 }
 
 export default class HashMapLoader {
-    private components: {
-        [frontendId: string]: ComponentDatum<ComponentType<any>, any>;
-    } = {};
-    private actionsComponents: {
-        [frontendId: string]: ComponentDatum<ActionComponent<any>, any>;
-    } = {};
-
-    private dataComponents: {
-        [frontendId: string]: ComponentDatum<DataComponent<any>, any>;
-    } = {};
-    private apps: {
-        [frontendId: string]: mapRegisterCallback;
-    } = {};
-    private keys: {
-        [frontendId: string]: boolean;
-    } = {};
+    private components: Record<string, ComponentDatum<any>> = {};
+    private actionsComponents: Record<string, ComponentDatum<any>> = {};
+    private dataComponents: Record<string, ComponentDatum<any>> = {};
+    private apps: Record<string, mapRegisterCallback> = {};
+    private keys: Record<string, boolean> = {};
 
     public register(frontendId: string, callback: mapRegisterCallback): void {
         this.checkConflict(frontendId);

@@ -23,7 +23,6 @@ abstract class FrontEndComponent extends BaseComponent
         $html = Html::el('div');
         $this->appendPropertyTo($html);
         $this->template->html = $html;
-        $this->template->setFile(__DIR__ . DIRECTORY_SEPARATOR . 'layout.latte');
-        $this->template->render();
+        $this->template->render(__DIR__ . DIRECTORY_SEPARATOR . 'layout.latte');
     }
 }

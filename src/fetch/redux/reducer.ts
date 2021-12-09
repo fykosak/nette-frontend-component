@@ -9,15 +9,15 @@ import {NetteActions} from '../../NetteActions/netteActions';
 import {Message, DataResponse} from '../../Responses/response';
 import {Action} from 'redux';
 
-export interface FetchApiState<> {
+export interface FetchReducer {
     submitting?: boolean;
-    error?: Response;
+    error?: Response | string | number | Error;
     messages: Message[];
     actions?: NetteActions;
     initialLoaded: boolean;
 }
 
-const fetchStart = (state: FetchApiState): FetchApiState => {
+const fetchStart = (state: FetchReducer): FetchReducer => {
     return {
         ...state,
         error: null,
@@ -25,7 +25,7 @@ const fetchStart = (state: FetchApiState): FetchApiState => {
         submitting: true,
     };
 };
-const fetchFail = (state: FetchApiState, action: ActionFetchFail): FetchApiState => {
+const fetchFail = (state: FetchReducer, action: ActionFetchFail): FetchReducer => {
     return {
         ...state,
         error: action.error,
@@ -37,7 +37,7 @@ const fetchFail = (state: FetchApiState, action: ActionFetchFail): FetchApiState
     };
 };
 
-function fetchSuccess<Data = undefined>(state: FetchApiState, action: ActionFetchSuccess<DataResponse<Data>>): FetchApiState {
+function fetchSuccess<Data>(state: FetchReducer, action: ActionFetchSuccess<DataResponse<Data>>): FetchReducer {
     return {
         ...state,
         actions: action.data.actions,
@@ -47,12 +47,12 @@ function fetchSuccess<Data = undefined>(state: FetchApiState, action: ActionFetc
     };
 }
 
-const initState: FetchApiState = {
+const initState: FetchReducer = {
     initialLoaded: false,
     messages: [],
 };
 
-export function fetchApi<Data = Record<string, never>>(state: FetchApiState = initState, action: Action<string>): FetchApiState {
+export function fetchReducer<Data>(state: FetchReducer = initState, action: Action<string>): FetchReducer {
     switch (action.type) {
         case ACTION_FETCH_START:
             return fetchStart(state);

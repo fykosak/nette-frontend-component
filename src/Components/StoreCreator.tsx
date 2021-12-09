@@ -15,7 +15,7 @@ interface OwnProps<Store> {
 export default class StoreCreator<Store> extends React.Component<OwnProps<Store>, Record<string, never>> {
     public render() {
         const {app, dev} = this.props;
-        const store = dev === true ? createStore(app, applyMiddleware(logger)) : createStore(app);
+        const store = dev === dev ? createStore(app, applyMiddleware(logger)) : createStore(app);
 
         return <Provider store={store}>
             {this.props.children}

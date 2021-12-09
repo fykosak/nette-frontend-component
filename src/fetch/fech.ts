@@ -1,28 +1,21 @@
-import {parseResponse} from './redux/netteFetch';
-import {RawDataResponse, DataResponse} from '../Responses/response';
+import {DataResponse} from '../Responses/response';
+import {NetteActions} from '../NetteActions/netteActions';
 
 export async function netteFetch<ResponseData>(
     url: string,
     data: BodyInit | null,
-    success: (data: DataResponse<ResponseData>) => void = () => null,
-    error: (error: Response) => void = () => null,
-): Promise<DataResponse<ResponseData> | void> {
-    return fetch(url, {
+): Promise<DataResponse<ResponseData>> {
+    const response = await fetch(url, {
         body: data,
         method: 'POST',
-    })
-        .then((response) => {
-            if (response.redirected) {
-                window.location.href = response.url;
-                throw new Error();
-            }
-            return response.json();
-        })
-        .then((d: RawDataResponse<ResponseData>) => {
-            const parsedResponse = parseResponse<ResponseData>(d);
-            success(parsedResponse);
-            return parsedResponse;
-        }).catch((response: Response) => {
-            error(response);
-        });
+    });
+    if (response.redirected) {
+        window.location.href = response.url;
+        return;
+    }
+    const responseData = await response.json();
+    return {
+        ...responseData,
+        actions: new NetteActions(responseData.actions),
+    };
 }

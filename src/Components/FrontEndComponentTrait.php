@@ -11,8 +11,6 @@ use Nette\Utils\Html;
 
 trait FrontEndComponentTrait
 {
-
-    private static bool $attachedJS = false;
     private string $frontendId;
 
     protected function registerFrontend(string $frontendId): void
@@ -67,11 +65,13 @@ trait FrontEndComponentTrait
     protected function getResponseData(): array
     {
         $this->configure();
-        $data['messages'] = array_map(
-            fn(Message $value): array => $value->__toArray(),
-            $this->getLogger()->getMessages()
-        );
-        $data['data'] = $this->getData();
+        $data = [
+            'messages' => array_map(
+                fn(Message $value): array => $value->__toArray(),
+                $this->getLogger()->getMessages()
+            ),
+            'data' => $this->getData(),
+        ];
         $this->getLogger()->clear();
         return $data;
     }

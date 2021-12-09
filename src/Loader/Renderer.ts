@@ -1,8 +1,7 @@
-import * as React from 'react';
 import HashMapLoader from './HashMapLoader';
 
 export default class Renderer {
-    public hashMapLoader: HashMapLoader;
+    public readonly hashMapLoader: HashMapLoader;
 
     public constructor() {
         this.hashMapLoader = new HashMapLoader();
