@@ -1,7 +1,7 @@
 {
   "name": "fykosak/nette-frontend-component",
   "require": {
-    "php": ">=7.4 <8.1",
+    "php": ">=7.4",
     "fykosak/nette-fks-utils": "dev-master#4054d9ff",
     "nette/application": "^v3.1.0",
     "nette/forms": "^3.1.0"

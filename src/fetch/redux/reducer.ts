@@ -19,7 +19,7 @@ export interface FetchStateMap {
 
 export type AllowedActions = ActionFetchSuccess<DataResponse<unknown>> | ActionFetchFail | Action<string>;
 
-export const fetchReducer: Reducer<FetchStateMap, AllowedActions> = (state = {
+export const fetchReducer: Reducer<FetchStateMap, AllowedActions> = <Data>(state = {
     initialLoaded: false,
     messages: [],
 }, action) => {
@@ -27,11 +27,9 @@ export const fetchReducer: Reducer<FetchStateMap, AllowedActions> = (state = {
         case ACTION_FETCH_START:
             return fetchStart(state);
         case ACTION_FETCH_FAIL:
-            // @ts-ignore
-            return fetchFail(state, action);
+            return fetchFail(state, <ActionFetchFail>action);
         case ACTION_FETCH_SUCCESS:
-            // @ts-ignore
-            return fetchSuccess(state, action);
+            return fetchSuccess<Data>(state, <ActionFetchSuccess<DataResponse<Data>>>action);
         default:
             return state;
     }
@@ -57,7 +55,7 @@ const fetchFail = (state: FetchStateMap, action: ActionFetchFail): FetchStateMap
     };
 };
 
-const fetchSuccess = (state: FetchStateMap, action: ActionFetchSuccess<DataResponse<unknown>>): FetchStateMap => {
+const fetchSuccess = <Data>(state: FetchStateMap, action: ActionFetchSuccess<DataResponse<Data>>): FetchStateMap => {
     return {
         ...state,
         actions: action.data.actions,

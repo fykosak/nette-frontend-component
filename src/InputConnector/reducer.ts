@@ -19,11 +19,9 @@ export const inputConnectorReducer: Reducer<InputConnectorStateMap, AllowedActio
 }, action): InputConnectorStateMap => {
     switch (action.type) {
         case ACTION_CHANGE_DATA:
-            // @ts-ignore
-            return setData(state, action);
+            return setData(state, <ActionChangeData>action);
         case ACTION_SET_INITIAL_DATA:
-            // @ts-ignore
-            return setInitialData(state, action);
+            return setInitialData(state, <ActionSetInitialData>action);
         default:
             return state;
     }
