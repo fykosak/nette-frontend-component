@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Fykosak\NetteFrontendComponent\Components;
 
-use Fykosak\Utils\BaseComponent\BaseComponent;
+use Fykosak\Utils\Components\DIComponent;
 use Nette\DI\Container;
 use Nette\Utils\Html;
 
-abstract class FrontEndComponent extends BaseComponent
+abstract class FrontEndComponent extends DIComponent
 {
     use FrontEndComponentTrait;
 
