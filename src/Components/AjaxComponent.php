@@ -13,7 +13,6 @@ use Nette\Http\{IRequest, IResponse};
 
 abstract class AjaxComponent extends FrontEndComponent
 {
-
     private IRequest $request;
     protected NetteActions $actions;
 
@@ -39,7 +38,7 @@ abstract class AjaxComponent extends FrontEndComponent
     /**
      * @throws AbortException
      */
-    final protected function sendAjaxResponse(int $code = IResponse::S200_OK): void
+    final protected function sendAjaxResponse(int $code = IResponse::S200_OK): never
     {
         $response = new AjaxResponse();
         $response->setCode($code);

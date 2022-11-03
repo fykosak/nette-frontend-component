@@ -12,11 +12,9 @@ class NetteActions
     use SmartObject;
 
     private array $actions = [];
-    private Component $component;
 
-    public function __construct(Component $component)
+    public function __construct(private readonly Component $component)
     {
-        $this->component = $component;
     }
 
     /**
