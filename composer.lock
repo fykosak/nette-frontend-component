@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "843d4828333b8bb2af30bee2ba4276ed",
+    "content-hash": "aa800d9dd7f94af66f9f904f969a7afd",
     "packages": [
         {
             "name": "fykosak/nette-fks-utils",
-            "version": "dev-master",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fykosak/nette-fks-utils.git",
-                "reference": "57491d0"
+                "reference": "d8b24d443a27d9cc56c468c2249e23d37500183e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fykosak/nette-fks-utils/zipball/57491d0",
-                "reference": "57491d0",
+                "url": "https://api.github.com/repos/fykosak/nette-fks-utils/zipball/d8b24d443a27d9cc56c468c2249e23d37500183e",
+                "reference": "d8b24d443a27d9cc56c468c2249e23d37500183e",
                 "shasum": ""
             },
             "require": {
@@ -36,7 +36,6 @@
                 "nette/tester": "^v2.4.0",
                 "squizlabs/php_codesniffer": "3.7.1"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -56,28 +55,28 @@
             ],
             "support": {
                 "issues": "https://github.com/fykosak/nette-fks-utils/issues",
-                "source": "https://github.com/fykosak/nette-fks-utils/tree/master"
+                "source": "https://github.com/fykosak/nette-fks-utils/tree/v0.2.0"
             },
-            "time": "2022-10-19T20:43:50+00:00"
+            "time": "2022-11-03T16:16:46+00:00"
         },
         {
             "name": "latte/latte",
-            "version": "v2.11.5",
+            "version": "v2.11.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/latte.git",
-                "reference": "89e647e51213af8a270fe9903b8735a2f6c83ad1"
+                "reference": "af4dbb23a6044b1cf4904830a9b00246318c93d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/latte/zipball/89e647e51213af8a270fe9903b8735a2f6c83ad1",
-                "reference": "89e647e51213af8a270fe9903b8735a2f6c83ad1",
+                "url": "https://api.github.com/repos/nette/latte/zipball/af4dbb23a6044b1cf4904830a9b00246318c93d4",
+                "reference": "af4dbb23a6044b1cf4904830a9b00246318c93d4",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-tokenizer": "*",
-                "php": ">=7.1 <8.2"
+                "php": ">=7.1 <8.3"
             },
             "conflict": {
                 "nette/application": "<2.4.1"
@@ -140,9 +139,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nette/latte/issues",
-                "source": "https://github.com/nette/latte/tree/v2.11.5"
+                "source": "https://github.com/nette/latte/tree/v2.11.6"
             },
-            "time": "2022-06-26T10:12:18+00:00"
+            "time": "2022-11-04T14:53:52+00:00"
         },
         {
             "name": "nette/application",
@@ -1008,9 +1007,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "fykosak/nette-fks-utils": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
