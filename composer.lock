@@ -4,11 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "30258290ce6c99b4b66e175f1b9317d5",
+    "content-hash": "9ebf63ccd0bfc6e76427eb8f49eb6127",
     "packages": [
         {
             "name": "fykosak/nette-fks-utils",
-            "version": "dev-master",
+            "version": "dev-dev-context-translator",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fykosak/nette-fks-utils.git",
@@ -30,13 +30,12 @@
                 "nette/forms": "^v3.1.0",
                 "nette/http": "^v3.1.0",
                 "nette/utils": "^v3.2.0",
-                "php": "8.1.*"
+                "php": "7.4.* | 8.0.* | 8.1.* "
             },
             "require-dev": {
                 "nette/tester": "^v2.4.0",
-                "squizlabs/php_codesniffer": "3.7.1"
+                "squizlabs/php_codesniffer": "3.6.0"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -56,9 +55,9 @@
             ],
             "support": {
                 "issues": "https://github.com/fykosak/nette-fks-utils/issues",
-                "source": "https://github.com/fykosak/nette-fks-utils/tree/v0.2.0"
+                "source": "https://github.com/fykosak/nette-fks-utils/tree/dev-context-translator"
             },
-            "time": "2022-11-03T16:16:46+00:00"
+            "time": "2023-01-24T17:33:58+00:00"
         },
         {
             "name": "latte/latte",
