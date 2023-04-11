@@ -35,6 +35,13 @@ abstract class AjaxComponent extends FrontEndComponent
     {
         $this->actions->addAction($key, $destination, $params);
     }
+    /**
+     * @throws InvalidLinkException
+     */
+    final public function addPresenterLink(string $key, string $destination, array $params = []): void
+    {
+        $this->actions->addAction($key, $destination, $params);
+    }
 
     /**
      * @throws AbortException
