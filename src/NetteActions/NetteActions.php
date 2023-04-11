@@ -26,6 +26,13 @@ class NetteActions
     {
         $this->actions[$key] = $this->component->link($destination, $params);
     }
+    /**
+     * @throws InvalidLinkException
+     */
+    public function addPresenterLink(string $key, string $destination, array $params = []): void
+    {
+        $this->actions[$key] = $this->component->getPresenter()->link($destination, $params);
+    }
 
     public function removeAction(string $key): void
     {
