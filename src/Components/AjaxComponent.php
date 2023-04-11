@@ -40,7 +40,7 @@ abstract class AjaxComponent extends FrontEndComponent
      */
     final public function addPresenterLink(string $key, string $destination, array $params = []): void
     {
-        $this->actions->addAction($key, $destination, $params);
+        $this->actions->addPresenterLink($key, $destination, $params);
     }
 
     /**
