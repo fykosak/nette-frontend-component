@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {FunctionComponent} from 'react';
-import * as ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import {NetteActions} from '../NetteActions/nette-actions';
 
 export type mapRegisterCallback = (element: Element, frontendId: string, data: string, actions: NetteActions) => void;
@@ -54,11 +54,12 @@ export default class HashMapLoader {
     }
 
     public render(element: Element): boolean {
+        const root = createRoot(element);
         const frontendId = element.getAttribute('data-frontend-id');
 
         if (Object.hasOwn(this.components, frontendId)) {
             const {component, params} = this.components[frontendId];
-            ReactDOM.render(React.createElement(component, params), element);
+            root.render(React.createElement(component, params));
             return true;
         }
 
@@ -67,7 +68,7 @@ export default class HashMapLoader {
         if (Object.hasOwn(this.dataComponents, frontendId)) {
             const {component, params} = this.dataComponents[frontendId];
             // @ts-ignore
-            ReactDOM.render(React.createElement(component, {data, ...params}), element);
+            root.render(React.createElement(component, {data, ...params}));
             return true;
         }
 
@@ -76,7 +77,7 @@ export default class HashMapLoader {
         if (Object.hasOwn(this.actionsComponents, frontendId)) {
             const {component, params} = this.actionsComponents[frontendId];
             // @ts-ignore
-            ReactDOM.render(React.createElement(component, {actions, data, ...params}), element);
+            root.render(React.createElement(component, {actions, data, ...params}));
             return true;
         }
 
