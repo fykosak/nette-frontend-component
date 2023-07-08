@@ -1,4 +1,4 @@
-import HashMapLoader from './HashMapLoader';
+import HashMapLoader from './hash-map-loader';
 
 export default class Renderer {
     public readonly hashMapLoader: HashMapLoader;

@@ -1,4 +1,4 @@
-import {NetteActions} from '../NetteActions/netteActions';
+import {NetteActions} from '../NetteActions/nette-actions';
 
 export interface Message {
     level: string;

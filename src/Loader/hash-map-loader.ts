@@ -1,23 +1,23 @@
 import * as React from 'react';
+import {FunctionComponent} from 'react';
 import * as ReactDOM from 'react-dom';
-import {NetteActions} from '../NetteActions/netteActions';
-import {ComponentType} from 'react';
+import {NetteActions} from '../NetteActions/nette-actions';
 
 export type mapRegisterCallback = (element: Element, frontendId: string, data: string, actions: NetteActions) => void;
 
-type DataComponent<OwnProps, Data = unknown> = ComponentType<OwnProps & { data: Data }>
+type DataComponent<OwnProps = unknown, Data = unknown> = FunctionComponent<OwnProps & { data: Data }>;
 
-type ActionComponent<OwnProps = Record<string, never>, Data = unknown> = ComponentType<OwnProps & { data: Data, actions: NetteActions }>;
+type ActionComponent<OwnProps = unknown, Data = unknown> = FunctionComponent<OwnProps & { data: Data, actions: NetteActions }>;
 
-interface ComponentDatum<OwnProps, Component extends ComponentType<OwnProps> = ComponentType<OwnProps>> {
+interface ComponentDatum<OwnProps = unknown, Component extends FunctionComponent<OwnProps> = FunctionComponent<OwnProps>> {
     component: Component;
     params: OwnProps;
 }
 
 export default class HashMapLoader {
-    private components: Record<string, ComponentDatum<any>> = {};
-    private actionsComponents: Record<string, ComponentDatum<any>> = {};
-    private dataComponents: Record<string, ComponentDatum<any>> = {};
+    private components: { [key: string]: ComponentDatum<unknown, FunctionComponent> } = {};
+    private actionsComponents: { [key: string]: ComponentDatum<unknown, ActionComponent> } = {};
+    private dataComponents: { [key: string]: ComponentDatum<unknown, DataComponent> } = {};
     private apps: Record<string, mapRegisterCallback> = {};
     private keys: Record<string, boolean> = {};
 
@@ -26,7 +26,7 @@ export default class HashMapLoader {
         this.apps[frontendId] = callback;
     }
 
-    public registerActionsComponent<Data = unknown, OwnProps = Record<string, never>>(
+    public registerActionsComponent<Data = unknown, OwnProps = unknown>(
         frontendId: string,
         component: ActionComponent<OwnProps, Data>,
         params: OwnProps = null,
@@ -35,7 +35,7 @@ export default class HashMapLoader {
         this.actionsComponents[frontendId] = {component, params};
     }
 
-    public registerDataComponent<Data = unknown, OwnProps = Record<string, never>>(
+    public registerDataComponent<Data = unknown, OwnProps = unknown>(
         frontendId: string,
         component: DataComponent<OwnProps, Data>,
         params: OwnProps = null,
@@ -46,7 +46,7 @@ export default class HashMapLoader {
 
     public registerComponent<OwnProps = Record<string, never>>(
         frontendId: string,
-        component: ComponentType<OwnProps>,
+        component: FunctionComponent<OwnProps>,
         params: OwnProps = null,
     ): void {
         this.checkConflict(frontendId);
@@ -56,7 +56,7 @@ export default class HashMapLoader {
     public render(element: Element): boolean {
         const frontendId = element.getAttribute('data-frontend-id');
 
-        if (this.components.hasOwnProperty(frontendId)) {
+        if (Object.hasOwn(this.components, frontendId)) {
             const {component, params} = this.components[frontendId];
             ReactDOM.render(React.createElement(component, params), element);
             return true;
@@ -64,21 +64,23 @@ export default class HashMapLoader {
 
         const rawData = element.getAttribute('data-data');
         const data = JSON.parse(rawData);
-        if (this.dataComponents.hasOwnProperty(frontendId)) {
+        if (Object.hasOwn(this.dataComponents, frontendId)) {
             const {component, params} = this.dataComponents[frontendId];
+            // @ts-ignore
             ReactDOM.render(React.createElement(component, {data, ...params}), element);
             return true;
         }
 
         const actionsData = JSON.parse(element.getAttribute('data-actions'));
         const actions = new NetteActions(actionsData);
-        if (this.actionsComponents.hasOwnProperty(frontendId)) {
+        if (Object.hasOwn(this.actionsComponents, frontendId)) {
             const {component, params} = this.actionsComponents[frontendId];
+            // @ts-ignore
             ReactDOM.render(React.createElement(component, {actions, data, ...params}), element);
             return true;
         }
 
-        if (this.apps.hasOwnProperty(frontendId)) {
+        if (Object.hasOwn(this.apps, frontendId)) {
             this.apps[frontendId](element, frontendId, rawData, actions);
             return true;
         }
@@ -86,7 +88,7 @@ export default class HashMapLoader {
     }
 
     private checkConflict(frontendId: string): void {
-        if (this.keys.hasOwnProperty(frontendId)) {
+        if (Object.hasOwn(this.keys, frontendId)) {
             throw new Error('App with "' + frontendId + '" is already registred.');
         }
         this.keys[frontendId] = true;
