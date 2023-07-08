@@ -9,8 +9,14 @@ interface OwnProps<Store, Data> {
     app: Reducer<Store, Action<string>>;
 }
 
-export default function ActionsStoreCreator<Store, Data>({initialData, app}: OwnProps<Store, Data>) {
+export default function ActionsStoreCreator<Store, Data>(
+    {
+        initialData,
+        app,
+        children,
+    }: React.PropsWithChildren<OwnProps<Store, Data>>,
+) {
     return <StoreCreator app={app}>
-        <StoreLoader initialData={initialData}>{this.props.children}</StoreLoader>
+        <StoreLoader initialData={initialData}>{children}</StoreLoader>
     </StoreCreator>;
 }
