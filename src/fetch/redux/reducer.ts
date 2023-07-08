@@ -5,7 +5,7 @@ import {
     ActionFetchFail,
     ActionFetchSuccess,
 } from './actions';
-import {NetteActions} from '../../NetteActions/netteActions';
+import {NetteActions} from '../../NetteActions/nette-actions';
 import {Message, DataResponse} from '../../Responses/response';
 import {Action, Reducer} from 'redux';
 
