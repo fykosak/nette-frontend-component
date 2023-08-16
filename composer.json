@@ -2,7 +2,7 @@
   "name": "fykosak/nette-frontend-component",
   "require": {
     "php": ">=7.4",
-    "fykosak/nette-fks-utils": "dev-dev-context-translator#a4a8bbb",
+    "fykosak/nette-fks-utils": "^v0.1.1",
     "nette/application": "^v3.1.0",
     "nette/forms": "^3.1.0"
   },
