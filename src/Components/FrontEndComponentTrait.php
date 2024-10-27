@@ -47,10 +47,7 @@ trait FrontEndComponentTrait
         return $logger;
     }
 
-    /**
-     * @return mixed
-     */
-    protected function getData()
+    protected function getData(): mixed
     {
         return null;
     }
